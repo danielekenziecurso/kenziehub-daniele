@@ -5,7 +5,7 @@ import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { StyledLogin } from "./styles";
 import { toast } from "react-toastify";
-import logo from "../../assets/logo.svg";
+import logo from "../../assets/img/logo.svg";
 import Input from "../Input";
 import { api } from "../../services/api";
 

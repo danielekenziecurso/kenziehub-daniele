@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyledHome } from './styles';
-import logo from '../../assets/logo.svg'
+import logo from '../../assets/img/logo.svg'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { api } from '../../services/api';

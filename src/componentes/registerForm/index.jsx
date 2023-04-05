@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { api } from "../../services/api";
-import logo from "../../assets/logo.svg";
+import logo from "../../assets/img/logo.svg";
 import Input from "../Input";
 
 const RegisterForm = () => {
