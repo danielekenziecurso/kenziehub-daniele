@@ -1,7 +1,7 @@
 import React from "react";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { StyledRegister } from "./styles";
-import * as yup from "yup";
+import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -12,22 +12,26 @@ import Input from "../Input";
 const RegisterForm = () => {
   const navigate = useNavigate();
 
-  const formRegister = yup.object().shape({
-    name: yup.string().required("Nome é obrigatório."),
-    email: yup
+  const formRegister = z.object({
+    name: z.string().nonempty("Nome é obrigatório."),
+    email: z
       .string()
-      .required("Email é obrigatório")
+      .nonempty("Email é obrigatório")
       .email("O email digitado é inválido."),
-    password: yup
+    password: z
       .string()
-      .required("Senha é obrigatória")
+      .nonempty("Senha é obrigatória")
       .min(6, "A senha precisa ter pelo menos seis caracteres"),
-    confirmPassword: yup
+    confirmPassword: z
       .string()
-      .required("Confirmar a senha é obrigatório")
-      .oneOf([yup.ref("password")], "As senhas não correspondem"),
-    bio: yup.string().required("Bio é obrigatória."),
-    contact: yup.string().required("Contato é obrigatório."),
+      .nonempty("Confirmar a senha é obrigatório")
+      .refine(({ password, confirmPassword }) => password === confirmPassword, {
+        message: "As senhas não correspondem",
+        path: ["confirmPassword"],
+      }),
+    bio: z.string().nonempty("Bio é obrigatória."),
+    contact: z.string().nonempty("Contato é obrigatório."),
+    course_module: z.string().nonempty("Modulo é obrigatório."),
   });
 
   const userRegistration = async (data) => {
@@ -45,19 +49,21 @@ const RegisterForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(formRegister),
+    resolver: zodResolver(formRegister),
   });
 
   return (
     <StyledRegister>
       <header>
-          <img src={logo} alt={logo} />
-          <button type="submit" onClick={() => navigate("/")}>Voltar</button>
+        <img src={logo} alt={logo} />
+        <button type="submit" onClick={() => navigate("/")}>
+          Voltar
+        </button>
       </header>
-      <form onSubmit={handleSubmit(userRegistration)} >
+      <form onSubmit={handleSubmit(userRegistration)}>
         <div className="boxToCreate">
-        <h3>Crie sua conta</h3>
-        <p>Rapido e grátis, vamos nessa</p>
+          <h3>Crie sua conta</h3>
+          <p>Rapido e grátis, vamos nessa</p>
         </div>
         <Input
           label="Name"
@@ -108,23 +114,23 @@ const RegisterForm = () => {
           type="text"
         />
         <div className="boxselect">
-        <p>Selecionar módulo</p>
-        <select {...register("course_module")} >
-          <option value="Primeiro módulo">
-            Primeiro módulo (Introdução ao Frontend)
-          </option>
-          <option value="Segundo módulo">
-            Segundo módulo (Frontend Avançado)
-          </option>
-          <option value="Terceiro módulo">
-            Terceiro módulo (Introdução ao Backend)
-          </option>
-          <option value="Quarto módulo">
-            Quarto módulo (Backend Avançado)
-          </option>
-        </select>
-        </div> 
-        <button type="submit">Cadastrar</button>     
+          <p>Selecionar módulo</p>
+          <select {...register("course_module")}>
+            <option value="Primeiro módulo">
+              Primeiro módulo (Introdução ao Frontend)
+            </option>
+            <option value="Segundo módulo">
+              Segundo módulo (Frontend Avançado)
+            </option>
+            <option value="Terceiro módulo">
+              Terceiro módulo (Introdução ao Backend)
+            </option>
+            <option value="Quarto módulo">
+              Quarto módulo (Backend Avançado)
+            </option>
+          </select>
+        </div>
+        <button type="submit">Cadastrar</button>
       </form>
     </StyledRegister>
   );

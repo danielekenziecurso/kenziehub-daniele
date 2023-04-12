@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const StyledInput = styled.input`
-  color: var(--color-Grey-1);
+  color: var(--grey-0);
   background-color: var(--grey-2);
 
   width: 300px;

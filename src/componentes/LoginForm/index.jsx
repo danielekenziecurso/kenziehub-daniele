@@ -1,7 +1,7 @@
-import { yupResolver } from "@hookform/resolvers/yup";
+import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import * as yup from "yup";
+import * as z from "zod";
 import { useNavigate } from "react-router-dom";
 import { StyledLogin } from "./styles";
 import { toast } from "react-toastify";
@@ -13,14 +13,13 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const [user, setuser] = useState({})
 
-  const formLogin = yup.object().shape({
-    email: yup
-      .string()
-      .required("Email é obrigatório")
+  const formLogin = z.object({
+    email: z
+      .string().nonempty("Email é obrigatório")
       .email("O email digitado é inválido."),
-    password: yup
+    password: z
       .string()
-      .required("Senha é obrigatória")
+      .nonempty("Senha é obrigatória")
       .min(6, "A senha precisa ter pelo menos seis caracteres"),
   });
   const userLogin = async (data) => {
@@ -40,7 +39,7 @@ const LoginForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(formLogin),
+    resolver: zodResolver(formLogin),
   });
   return (
     <StyledLogin>
@@ -67,7 +66,7 @@ const LoginForm = () => {
           error={errors.password?.message}
           type="password"
         />
-        <button>Entrar</button>
+        <button type="submit">Entrar</button>
         <p className="parag">Ainda não possui uma conta?</p>
         <button onClick={navigate("/register")}>Cadastre-se</button>
       </form>

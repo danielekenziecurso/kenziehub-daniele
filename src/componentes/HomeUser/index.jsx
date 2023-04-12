@@ -12,7 +12,8 @@ const HomeUser = () => {
 
   const logout = () => {
     navigate("/");
-    setuserr(localStorage.removeItem("@TOKEN", "@USERID"));
+    setuserr(localStorage.removeItem("@TOKEN"));
+    setuserr(localStorage.removeItem("@USERID"));
   }
   useEffect(() => {
     async function userVerification(){
