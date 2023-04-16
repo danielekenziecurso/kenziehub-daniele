@@ -65,7 +65,6 @@ export const TechProvider = ({children}) => {
             toast.error("Ops! Algo deu errado");
           }
       };
-      console.log(usersTechs)
     const changeTechs = async (data, techId) => {
     const token = JSON.parse(localStorage.getItem("@TOKEN"));
     try {
