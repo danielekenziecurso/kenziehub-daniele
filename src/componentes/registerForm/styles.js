@@ -27,9 +27,11 @@ export const StyledRegister = styled.main`
     width: 145px;
     height: 20px;
   }
-  header > button {
+  header > a {
     background-color: var(--grey-3);
     color: var(--grey-0);
+    text-align: center;
+    justify-content: center;
 
     border-radius: 4px;
     border: none;

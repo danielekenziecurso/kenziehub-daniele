@@ -1,16 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { StyledRegister } from "./styles";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import { api } from "../../services/api";
 import logo from "../../assets/img/logo.svg";
 import Input from "../Input";
+import { UserContext } from "../../providers/UserContext";
+import { Link } from "react-router-dom";
 
 const RegisterForm = () => {
-  const navigate = useNavigate();
+  const { navigate, userRegistration} = useContext(UserContext);
 
   const formRegister = z.object({
     name: z.string().nonempty("Nome é obrigatório."),
@@ -34,16 +33,7 @@ const RegisterForm = () => {
     course_module: z.string().nonempty("Modulo é obrigatório."),
   });
 
-  const userRegistration = async (data) => {
-    delete data.confirmPassword;
-    try {
-      await api.post("/users", data);
-      toast.success("Conta criada com sucesso!");
-      navigate("/");
-    } catch (error) {
-      toast.error("Ops! Algo deu errado");
-    }
-  };
+  
   const {
     register,
     handleSubmit,
@@ -56,9 +46,9 @@ const RegisterForm = () => {
     <StyledRegister>
       <header>
         <img src={logo} alt={logo} />
-        <button type="submit" onClick={() => navigate("/")}>
+        <Link to={"/"}>
           Voltar
-        </button>
+        </Link>
       </header>
       <form onSubmit={handleSubmit(userRegistration)}>
         <div className="boxToCreate">

@@ -1,39 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext} from 'react';
 import { StyledHome } from './styles';
-import logo from '../../assets/img/logo.svg'
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { api } from '../../services/api';
+import logo from '../../assets/img/logo.svg';
+import { UserContext } from '../../providers/UserContext';
+import ListTechs from '../listTechs';
+import { TechContext } from '../../providers/TechContext';
+import Registertech from '../modais/Registertech';
+
 
 const HomeUser = () => {
-  const navigate = useNavigate();
-  const [userr, setuserr] = useState({});
-  const token = localStorage.getItem("@TOKEN");
-
-  const logout = () => {
-    navigate("/");
-    setuserr(localStorage.removeItem("@TOKEN"));
-    setuserr(localStorage.removeItem("@USERID"));
-  }
-  useEffect(() => {
-    async function userVerification(){
-      try{
-        const response = await api.get("/profile", {
-          headers:{
-            Authorization: `Bearer ${JSON.parse(token)}`
-          }
-        }); 
-        setuserr(response.data);
-        navigate("/home");
-      }
-      catch(error){
-        toast.error("Ops! Algo deu errado!")
-      }
-    }
-    userVerification()
-  }, [token]);
-
-
+const {user, logout} = useContext(UserContext);
+const {modalRegister, setModalRegister} = useContext(TechContext)
   return (
     <StyledHome>
         <header>
@@ -43,14 +19,16 @@ const HomeUser = () => {
         </button>
       </header>
       <div className="userInformation" > 
-      <h3>Olá, {userr.name} </h3>
-        <p>{userr.course_module}</p>
+      <h3>Olá, {user.name} </h3>
+        <p>{user.course_module}</p>
       </div>
       <div className="information">
-        <h2>Que pena! Estamos em desenvolvimento:(</h2>
-        <p>
-          Nossa aplicação está em desenvolvimento, em breve teremos novidades
-        </p>
+      <div className='boxtechs'>
+        <h2>Tecnologias</h2>
+       <button type='button' onClick={() => setModalRegister(!modalRegister)}>+</button>
+       {modalRegister && <Registertech/>}
+       </div>
+       <ListTechs/>
       </div>
     </StyledHome>
   )

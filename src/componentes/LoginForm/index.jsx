@@ -1,38 +1,26 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { useNavigate } from "react-router-dom";
 import { StyledLogin } from "./styles";
-import { toast } from "react-toastify";
 import logo from "../../assets/img/logo.svg";
 import Input from "../Input";
-import { api } from "../../services/api";
+import { useContext } from "react";
+import { UserContext } from "../../providers/UserContext";
 
 const LoginForm = () => {
-  const navigate = useNavigate();
-  const [user, setuser] = useState({})
+  const { userLogin, navigate } = useContext(UserContext);
 
   const formLogin = z.object({
     email: z
-      .string().nonempty("Email é obrigatório")
+      .string()
+      .nonempty("Email é obrigatório")
       .email("O email digitado é inválido."),
     password: z
       .string()
       .nonempty("Senha é obrigatória")
       .min(6, "A senha precisa ter pelo menos seis caracteres"),
   });
-  const userLogin = async (data) => {
-    try {
-      const response = await api.post("/sessions", data);
-      setuser(response.data.user);
-      localStorage.setItem("@TOKEN", JSON.stringify(response.data.token));
-      localStorage.setItem("@USERID", JSON.stringify(response.data.user));
-      navigate("/home");
-    } catch (error) {
-      toast.error("Ops! Algo deu errado!");
-    }
-  };
 
   const {
     register,
@@ -68,10 +56,9 @@ const LoginForm = () => {
         />
         <button type="submit">Entrar</button>
         <p className="parag">Ainda não possui uma conta?</p>
-        <button onClick={navigate("/register")}>Cadastre-se</button>
+        <button type="submit" onClick={() => navigate("/register")}>Cadastre-se</button>
       </form>
     </StyledLogin>
   );
 };
-
 export default LoginForm;

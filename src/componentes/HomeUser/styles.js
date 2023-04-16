@@ -15,8 +15,9 @@ export const StyledHome = styled.section`
   header {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
+    gap: 150px;
 
     width: 100vw;
     max-width: 1440px;
@@ -71,21 +72,37 @@ export const StyledHome = styled.section`
   .information {
     display: flex;
     flex-direction: column;
+    align-items: center;
   }
-  .information > h2 {
+  .boxtechs{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100vw;
+    max-width: 1440px;
+    gap: 110px;
+   
+  }
+  .boxtechs > h2 {
     color: var(--grey-0);
     font-size: 18px;
     font-weight: 700;
     line-height: 28px;
-    margin-left: 22px;
+   
   }
-  .information > p {
-    color: var(--grey-1);
-    font-size: 16px;
+  .boxtechs > button {
+    color: var(--grey-0);
+    background-color: var(--grey-3);
+
+    border-radius: 4px;
+    border: 1px solid var(--grey-3);
+
+    height: 52px;
+   text-align: center;
+
+    font-size: 22px;
     font-weight: 400;
-    line-height: 22px;
-    margin-top: 25px;
-    margin-left: 22px;
   }
   @media (max-width: 450px) {
     header {
@@ -101,7 +118,7 @@ export const StyledHome = styled.section`
     .userInformation > h3 {
         margin-left: 20px;
     }
-    .userInformation > p {
+    .userInformation > button {
         margin-left: 20px;
     }
   }
