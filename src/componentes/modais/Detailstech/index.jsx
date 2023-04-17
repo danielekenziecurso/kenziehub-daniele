@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { TechContext } from "../../../providers/TechContext";
 
 const Detailstech = () => {
- const {modalToEdit, setModalToEdit, changeTechs, deleteTechs} = useContext(TechContext);
+ const {modalToEdit, setModalToEdit, changeTechs, deleteTechs, techsId, setTechsId} = useContext(TechContext);
 
   const modalregister = z.object({
     title: z.string().nonempty("titulo é Obrigatório."),
@@ -21,6 +21,21 @@ const Detailstech = () => {
   } = useForm({
     resolver: zodResolver(modalregister),
   });
+  const handleDelet = async () => {
+    await deleteTechs(techsId);
+    setTechsId("")
+  }
+  const submit = async (data) => {
+    if(modalToEdit){
+      await changeTechs(techsId, data);
+    }
+    else{
+      await registerTechs(data);
+    }
+    setTechsId("");
+    setModalToEdit(false);
+  }
+
 
 
   return (
@@ -30,7 +45,7 @@ const Detailstech = () => {
           <h3>Tecnologia Detalhes</h3>
           <span onClick={() => setModalToEdit(!modalToEdit)}>X</span>
         </header>
-        <form onSubmit={handleSubmit(changeTechs)}>
+        <form onSubmit={handleSubmit(submit)}>
           <Input
             label="title"
             placeholder="Ex: Material UI"
@@ -47,8 +62,8 @@ const Detailstech = () => {
               <option value="Avançado">Avançado</option>
             </select>
             <div className="buttons" >
-            <button className="change" type="submit">Salvar alterações</button>
-            <button className="excluir" type="button" onClick={() => deleteTechs()}>Excluir</button>
+            <button className="change" type="submit" id={techsId} >Salvar alterações</button>
+            <button className="excluir" type="button" id={techsId} onClick={() => handleDelet()}>Excluir</button>
             </div>
           </div>
         </form>

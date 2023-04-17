@@ -27,6 +27,9 @@ export const GlobalStyles = createGlobalStyle`
 button{
     cursor: pointer;
 }
+span{
+    cursor: pointer;
+}
 body{
     background: var(--grey-4);
 }

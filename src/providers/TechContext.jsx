@@ -2,6 +2,7 @@ import { createContext, useEffect } from "react";
 import { toast } from "react-toastify";
 import { api } from "../services/api";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const TechContext = createContext({});
 
@@ -10,6 +11,7 @@ export const TechProvider = ({children}) => {
     const [modalRegister, setModalRegister] = useState(false);
     const [modalToEdit, setModalToEdit] = useState(false);
     const [techsId, setTechsId] = useState("");
+    const navigate = useNavigate();
 
     const rendertech = async () => {
       const token = localStorage.getItem("@TOKEN");
@@ -49,53 +51,38 @@ export const TechProvider = ({children}) => {
         }
       };
 
-      const deleteTechs = async (techsId) => {
-        const token = JSON.parse(localStorage.getItem("@TOKEN"));
+      const deleteTechs = async (id) => {
           try {
-            await api.delete(`/users/techs/${techsId}`, {
+            const token = JSON.parse(localStorage.getItem("@TOKEN"));
+            const response = await api.delete(`/users/techs/${id}`, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
             });
-            const newslistTechs = usersTechs.filter(usersTechs => usersTechs.id !== techsId);
-            setUsersTechs(newslistTechs);
             toast.success("Tecnologias excluida!");
             setModalToEdit(false);
+            return response.data
           } catch (error) {
             toast.error("Ops! Algo deu errado");
           }
       };
-    const changeTechs = async (data, techId) => {
-    const token = JSON.parse(localStorage.getItem("@TOKEN"));
+    const changeTechs = async (id ,data) => {
     try {
-      const newobj = {
-        status: data.status,
-      };
-      await api.put(`/users/techs/${techId}`, newobj, {
+      const token = JSON.parse(localStorage.getItem("@TOKEN"));
+     const response = await api.put(`/users/techs/${id}`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      const putRequest = (data) => {
-        if (token) {
-          api.defaults.headers.authorization = `Bearer ${token}`;
-          api
-            .get("profile", data)
-            .then((response) => {
-              setUsersTechs(response.data);
-            })
-            .catch((error) => console.log(error));
-        }
-      };
-      putRequest();
       toast.success("Tecnologias atualizada com sucesso!");
       setModalToEdit(false);
+      return response.data
     } catch (error) {
       toast.error("Ops! Algo deu errado");
     }
   };
     return (
-        <TechContext.Provider value={{usersTechs, setTechsId, modalRegister, setModalRegister, registerTechs, modalToEdit, setModalToEdit, deleteTechs, changeTechs}}>
+        <TechContext.Provider value={{usersTechs, modalRegister, setModalRegister, registerTechs, modalToEdit, setModalToEdit, deleteTechs, changeTechs, techsId, setTechsId}}>
             {children}
         </TechContext.Provider>
     )

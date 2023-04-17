@@ -30,8 +30,8 @@ const LoginForm = () => {
     resolver: zodResolver(formLogin),
   });
   const handleregister = () => {
-    navigate("/register")
-  }
+    navigate("/register");
+  };
   return (
     <StyledLogin>
       <header>
@@ -59,7 +59,9 @@ const LoginForm = () => {
         />
         <button type="submit">Entrar</button>
         <p className="parag">Ainda não possui uma conta?</p>
-        <button type="submit" onClick={handleregister}>Cadastre-se</button>
+        <button type="submit" onClick={handleregister}>
+          Cadastre-se
+        </button>
       </form>
     </StyledLogin>
   );
