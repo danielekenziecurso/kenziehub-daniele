@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Modaledit } from "./styles";
 import Input from "../../Input";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,6 +8,7 @@ import { TechContext } from "../../../providers/TechContext";
 
 const Detailstech = () => {
  const {modalToEdit, setModalToEdit, changeTechs, deleteTechs, techsId, setTechsId} = useContext(TechContext);
+ const [disabled, setDisabled] = useState(false);
 
   const modalregister = z.object({
     title: z.string().nonempty("titulo é Obrigatório."),
@@ -27,13 +28,17 @@ const Detailstech = () => {
   }
   const submit = async (data) => {
     if(modalToEdit){
-      await changeTechs(techsId, data);
+      await changeTechs(techsId, data.techs);
     }
     else{
       await registerTechs(data);
     }
     setTechsId("");
     setModalToEdit(false);
+  }
+
+  const handledisabled = () => {
+    setDisabled(!disabled);
   }
 
 
@@ -48,7 +53,7 @@ const Detailstech = () => {
         <form onSubmit={handleSubmit(submit)}>
           <Input
             label="title"
-            placeholder="Ex: Material UI"
+            placeholder="Campo desabilitado" handledisabled
             id="title"
             {...register("title")}
             error={errors.title?.message}

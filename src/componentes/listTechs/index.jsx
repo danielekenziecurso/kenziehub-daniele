@@ -5,6 +5,7 @@ import Detailstech from "../modais/Detailstech";
 
 const ListTechs = () => {
   const { usersTechs, modalToEdit, setModalToEdit } = useContext(TechContext);
+  console.log(usersTechs)
 
   return (
     <StyledList>
