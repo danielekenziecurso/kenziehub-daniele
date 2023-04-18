@@ -7,8 +7,7 @@ import { useForm } from "react-hook-form";
 import { TechContext } from "../../../providers/TechContext";
 
 const Detailstech = () => {
- const {modalToEdit, setModalToEdit, changeTechs, deleteTechs, techsId, setTechsId} = useContext(TechContext);
- const [disabled, setDisabled] = useState(false);
+ const {modalToEdit, setModalToEdit, changeTechs, deleteTechs, usersTechs, setUsersTechs, techtitle, techsId} = useContext(TechContext);
 
   const modalregister = z.object({
     title: z.string().nonempty("titulo é Obrigatório."),
@@ -22,26 +21,10 @@ const Detailstech = () => {
   } = useForm({
     resolver: zodResolver(modalregister),
   });
-  const handleDelet = async () => {
-    await deleteTechs(techsId);
-    setTechsId("")
-  }
-  const submit = async (data) => {
-    if(modalToEdit){
-      await changeTechs(techsId, data.techs);
-    }
-    else{
-      await registerTechs(data);
-    }
-    setTechsId("");
-    setModalToEdit(false);
-  }
 
-  const handledisabled = () => {
-    setDisabled(!disabled);
+  const submit = (data) => {
+    changeTechs(data)
   }
-
-
 
   return (
     <Modaledit>
@@ -53,11 +36,12 @@ const Detailstech = () => {
         <form onSubmit={handleSubmit(submit)}>
           <Input
             label="title"
-            placeholder="Campo desabilitado" handledisabled
+            placeholder="Ex: css"
             id="title"
             {...register("title")}
             error={errors.title?.message}
             type="text"
+            value={techtitle}
           />
           <div className="selectBox">
             <p>Selecionar status</p>
@@ -68,7 +52,7 @@ const Detailstech = () => {
             </select>
             <div className="buttons" >
             <button className="change" type="submit" id={techsId} >Salvar alterações</button>
-            <button className="excluir" type="button" id={techsId} onClick={() => handleDelet()}>Excluir</button>
+            <button className="excluir" type="button" onClick={() => deleteTechs(techsId)}>Excluir</button>
             </div>
           </div>
         </form>

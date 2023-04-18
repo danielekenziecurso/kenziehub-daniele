@@ -11,6 +11,7 @@ export const TechProvider = ({ children }) => {
   const [modalRegister, setModalRegister] = useState(false);
   const [modalToEdit, setModalToEdit] = useState(false);
   const [techsId, setTechsId] = useState("");
+  const [techtitle, setTechTitle] = useState("");
   const navigate = useNavigate();
 
   const rendertech = async () => {
@@ -50,17 +51,18 @@ export const TechProvider = ({ children }) => {
     }
   };
 
-  const deleteTechs = async (id) => {
+  const deleteTechs = async (tech_id) => {
     try {
       const token = JSON.parse(localStorage.getItem("@TOKEN"));
-      const response = await api.delete(`/users/techs/:${id}`, {
+       await api.delete(`/users/techs/${tech_id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      toast.success("Tecnologias excluida!");
+      const newNewsList = usersTechs.filter(techs => techs.id !== tech_id);
+      setUsersTechs(newNewsList);
       setModalToEdit(false);
-      return response.data;
+      toast.success("Tecnologias excluida!");
     } catch (error) {
       toast.error("Ops! Algo deu errado");
     }
@@ -68,14 +70,15 @@ export const TechProvider = ({ children }) => {
   const changeTechs = async (data) => {
     try {
       const token = JSON.parse(localStorage.getItem("@TOKEN"));
-      const response = await api.put(`/users/techs/:tech_id`, data, {
+      const response = await api.put(`/users/techs/${techsId}`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+      setUsersTechs(response.data);
       toast.success("Tecnologias atualizada com sucesso!");
       setModalToEdit(false);
-      return response.data;
+      navigate("/home");
     } catch (error) {
       console.log(error);
       toast.error("Ops! Algo deu errado");
@@ -94,6 +97,8 @@ export const TechProvider = ({ children }) => {
         changeTechs,
         techsId,
         setTechsId,
+        setTechTitle,
+        techtitle
       }}
     >
       {children}
