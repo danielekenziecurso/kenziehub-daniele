@@ -54,12 +54,12 @@ export const TechProvider = ({ children }) => {
   const deleteTechs = async (tech_id) => {
     try {
       const token = JSON.parse(localStorage.getItem("@TOKEN"));
-       await api.delete(`/users/techs/${tech_id}`, {
+      await api.delete(`/users/techs/${tech_id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      const newNewsList = usersTechs.filter(techs => techs.id !== tech_id);
+      const newNewsList = usersTechs.filter((techs) => techs.id !== tech_id);
       setUsersTechs(newNewsList);
       setModalToEdit(false);
       toast.success("Tecnologias excluida!");
@@ -78,7 +78,6 @@ export const TechProvider = ({ children }) => {
       setUsersTechs(response.data);
       toast.success("Tecnologias atualizada com sucesso!");
       setModalToEdit(false);
-      navigate("/home");
     } catch (error) {
       console.log(error);
       toast.error("Ops! Algo deu errado");

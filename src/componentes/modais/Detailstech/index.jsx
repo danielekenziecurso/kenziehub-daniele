@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { TechContext } from "../../../providers/TechContext";
 
 const Detailstech = () => {
- const {modalToEdit, setModalToEdit, changeTechs, deleteTechs, usersTechs, setUsersTechs, techtitle, techsId} = useContext(TechContext);
+ const {modalToEdit, setModalToEdit, changeTechs, deleteTechs, techtitle, techsId} = useContext(TechContext);
 
   const modalregister = z.object({
     title: z.string().nonempty("titulo é Obrigatório."),
@@ -23,7 +23,7 @@ const Detailstech = () => {
   });
 
   const submit = (data) => {
-    changeTechs(data)
+    changeTechs(data);
   }
 
   return (
@@ -36,7 +36,7 @@ const Detailstech = () => {
         <form onSubmit={handleSubmit(submit)}>
           <Input
             label="title"
-            placeholder="Ex: css"
+            placeholder=""
             id="title"
             {...register("title")}
             error={errors.title?.message}
