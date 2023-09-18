@@ -93,7 +93,7 @@ const RegisterForm = () => {
           id="bio"
           {...register("bio")}
           error={errors.bio?.message}
-          type="password"
+          type="text"
         />
         <Input
           label="Contato"
